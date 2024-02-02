@@ -74,17 +74,18 @@ def archive_directory(user):
 
         console.print("\n[bold red]Task Cancelled[/bold red]")
 
-def sort_directory(user_directory):
+def sort_directory(user):
     """
     
     """
 
-def parse_directory_logs(user_directory):
+
+def parse_directory_logs(user):
     """
     
     """
 
-def backup_directory(user_directory):
+def backup_directory(user):
     """
     
     """
