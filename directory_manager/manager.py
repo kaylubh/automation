@@ -1,5 +1,5 @@
 from rich.console import Console
-from rich.prompt import Prompt
+from rich.prompt import Prompt, Confirm
 from rich.table import Table
 
 import os
@@ -27,27 +27,52 @@ def view_directory(user):
         console.print(table)
 
     except FileNotFoundError:
-        console.print(f"[bold red]No directory found for {user}[/bold red]")
+        console.print(f"\n[bold red]No directory found for {user}[/bold red]")
 
 def make_directory(user):
     """
     
     """
 
-    try:
-        user_path = os.path.join(user_directory_root, user)
-        os.mkdir(user_path)
-        
-        console.print(f"Directory created for {user}")
+    confirmation = Confirm.ask(f"\nAre you sure you want to create a new directory for {user}?")
 
-    except FileNotFoundError:
-        console.print(f"[bold red]No directory found for {user}[/bold red]")
+    if confirmation:
 
+        try:
+            user_path = os.path.join(user_directory_root, user)
+            os.mkdir(user_path)
+            
+            console.print(f"\nDirectory created for {user}")
 
-def archive_directory(user_directory):
+        except FileNotFoundError:
+            console.print(f"\n[bold red]No directory found for {user}[/bold red]")
+
+    else:
+
+        console.print("\n[bold red]Task Cancelled[/bold red]")
+
+def archive_directory(user):
     """
     
     """
+
+    confirmation = Confirm.ask(f"\nAre you sure you want to archive the directory for {user}?")
+
+    if confirmation:
+
+        try:
+            user_path = os.path.join(user_directory_root, user)
+            archive_path = os.path.join(user_directory_root, "archive", user)
+            shutil.move(user_path, archive_path)
+            
+            console.print(f"\nDirectory for {user} archived")
+
+        except FileNotFoundError:
+            console.print(f"\n[bold red]No directory found for {user}[/bold red]")
+
+    else:
+
+        console.print("\n[bold red]Task Cancelled[/bold red]")
 
 def sort_directory(user_directory):
     """
@@ -85,7 +110,8 @@ def main():
             user = Prompt.ask("\nEnter name of the user to create directory")
             make_directory(user)
         elif menu_selection == "3":
-            archive_directory()
+            user = Prompt.ask("\nEnter name of the user directory")
+            archive_directory(user)
         elif menu_selection == "4":
             sort_directory()
         elif menu_selection == "5":
