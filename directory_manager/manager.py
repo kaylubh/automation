@@ -9,7 +9,7 @@ import re
 
 console = Console()
 
-user_directory_root = "user_directory"
+user_directory_root = "users_directory"
 
 def view_directory(user):
     """
@@ -35,7 +35,8 @@ def make_directory(user):
     
     """
 
-    confirmation = Confirm.ask(f"\nAre you sure you want to create a new directory for {user}?")
+    console.print(f"[dim]\nThis task will create a new user directory with the name: {user}[/dim]")
+    confirmation = Confirm.ask(f"Are you sure you want to create a new directory for {user}?")
 
     if confirmation:
 
@@ -44,7 +45,7 @@ def make_directory(user):
 
             os.mkdir(user_path)
             
-            console.print(f"\nDirectory created for {user}")
+            console.print(f"\n[bold green]Directory created for {user}[/bold green]")
 
         except FileNotFoundError:
             console.print(f"\n[bold red]No directory found for {user}[/bold red]")
@@ -58,7 +59,8 @@ def archive_directory(user):
     
     """
 
-    confirmation = Confirm.ask(f"\nAre you sure you want to archive the directory for {user}?")
+    console.print(f"[dim]\nThis task will move the directory for {user} to the archive (delete)[/dim]")
+    confirmation = Confirm.ask(f"Are you sure you want to archive the directory for {user}?")
 
     if confirmation:
 
@@ -68,7 +70,7 @@ def archive_directory(user):
 
             shutil.move(user_path, archive_path)
             
-            console.print(f"\nDirectory for {user} archived")
+            console.print(f"\n[bold green]Directory for {user} archived[/bold green]")
 
         except FileNotFoundError:
             console.print(f"\n[bold red]No directory found for {user}[/bold red]")
@@ -82,7 +84,8 @@ def sort_directory(user):
     
     """
 
-    confirmation = Confirm.ask(f"\nAre you sure you want to sort the directory for {user}?")
+    console.print(f"[dim]\nThis task will sort the mail and log files for {user}[/dim]")
+    confirmation = Confirm.ask(f"Are you sure you want to sort the directory for {user}?")
 
     if confirmation:
 
@@ -120,7 +123,8 @@ def parse_directory_logs(user):
     
     """
 
-    confirmation = Confirm.ask(f"\nAre you sure you want to parse the logs for {user}?")
+    console.print(f"[dim]\nThis task will parse the ERROR and WARNING logs for {user}[/dim]")
+    confirmation = Confirm.ask(f"Are you sure you want to parse the logs for {user}?")
 
     if confirmation:
 
@@ -165,7 +169,8 @@ def backup_directory(user):
     
     """
 
-    confirmation = Confirm.ask(f"\nAre you sure you want to backup the directory for {user}?")
+    console.print(f"[dim]\nThis task will copy the directory for {user} to backups. Previous {user} backup will be OVERWROTE.[/dim]")
+    confirmation = Confirm.ask(f"Are you sure you want to backup the directory for {user}?")
 
     if confirmation:
 
@@ -191,7 +196,8 @@ def main():
     
     """
 
-    console.print("\n*** Welcome to the User Directory Management Tool ***")
+    console.print("\n***[bold blue] Welcome to the User Directory Management Tool [/bold blue]***")
+    console.print("[dim]Select a task from the list below to execute on a desired user directory. The tool is configured to work with a specified users directory, by default this is 'users_directory' for demonstration purposes. When inputting user directory names, only input the name of the user directory, do not input the full path to the directory. CORRECT: 'user1' INCORRECT: 'users_directory/user1'[/dim]")
 
     while True:
 
@@ -220,7 +226,7 @@ def main():
         elif menu_selection == "7":
             break
 
-    console.print("\n*** Exiting the User Directory Management Tool ***\n")
+    console.print("\n***[bold blue] Exiting the User Directory Management Tool [/bold blue]***\n")
 
 ###############
 ## Start App ##
