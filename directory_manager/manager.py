@@ -4,6 +4,7 @@ from rich.table import Table
 
 import os
 import shutil
+import re
 
 
 console = Console()
@@ -40,6 +41,7 @@ def make_directory(user):
 
         try:
             user_path = os.path.join(user_directory_root, user)
+
             os.mkdir(user_path)
             
             console.print(f"\nDirectory created for {user}")
@@ -63,6 +65,7 @@ def archive_directory(user):
         try:
             user_path = os.path.join(user_directory_root, user)
             archive_path = os.path.join(user_directory_root, "archive", user)
+
             shutil.move(user_path, archive_path)
             
             console.print(f"\nDirectory for {user} archived")
@@ -79,6 +82,44 @@ def sort_directory(user):
     
     """
 
+    confirmation = Confirm.ask(f"\nAre you sure you want to sort the directory for {user}?")
+
+    if confirmation:
+
+        try:
+            user_path = os.path.join(user_directory_root, user)
+            files = os.listdir(user_path)
+            # file_paths = [os.path.join(user_path, file) for file in files]
+
+            for file in files:
+
+                if re.search(r"\.mail$", file):
+                    mail_dir = os.path.join(user_path, "mail")
+                    os.makedirs(mail_dir, exist_ok=True)
+                    unsorted_path = os.path.join(user_path, file)
+                    sorted_path = os.path.join(mail_dir, file)
+                    shutil.move(unsorted_path, sorted_path)
+
+                if re.search(r"\.log\.txt$", file):
+                    logs_dir = os.path.join(user_path, "logs")
+                    os.makedirs(logs_dir, exist_ok=True)
+                    unsorted_path = os.path.join(user_path, file)
+                    sorted_path = os.path.join(logs_dir, file)
+                    shutil.move(unsorted_path, sorted_path)
+
+            # for file_path in file_paths:
+            #     root, ext = os.path.splitext(file_path)
+            #     sort_path = os.path.join(user_path, ext, (root + ext))
+            #     shutil.move(file_path, sort_path)
+                
+            console.print(f"\n[bold green]Directory sorted for {user}[/bold green]")
+
+        except FileNotFoundError:
+            console.print(f"\n[bold red]No directory found for {user}[/bold red]")
+
+    else:
+
+        console.print("\n[bold red]Task Cancelled[/bold red]")
 
 def parse_directory_logs(user):
     """
@@ -111,10 +152,11 @@ def main():
             user = Prompt.ask("\nEnter name of the user to create directory")
             make_directory(user)
         elif menu_selection == "3":
-            user = Prompt.ask("\nEnter name of the user directory")
+            user = Prompt.ask("\nEnter name of the user directory to archive")
             archive_directory(user)
         elif menu_selection == "4":
-            sort_directory()
+            user = Prompt.ask("\nEnter name of the user directory to sort")
+            sort_directory(user)
         elif menu_selection == "5":
             parse_directory_logs()
         elif menu_selection == "6":
