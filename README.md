@@ -26,9 +26,9 @@
 
 #### Run
 
-***For demonstration purposes the directory path for this implementation is hard-coded to the included directory `user_directory`***
+***For demonstration purposes the directory path for this implementation is hard-coded to the included directory `users_directory`***
 
-***Mock user directories for `user1` and `user2` are included, any created directories will be added to `user_directory`***
+***Mock user directories for `user1` and `user2` are included, any created directories will be added to `users_directory`***
 
 ***When specifying a directory path only provide the name of the user directory and not the whole path***
 
