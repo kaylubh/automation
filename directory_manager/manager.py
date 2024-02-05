@@ -165,6 +165,26 @@ def backup_directory(user):
     
     """
 
+    confirmation = Confirm.ask(f"\nAre you sure you want to backup the directory for {user}?")
+
+    if confirmation:
+
+        try:
+            user_path = os.path.join(user_directory_root, user)
+            user_backup_path = os.path.join(user_directory_root, "backups", user)
+
+            if os.path.exists(user_backup_path):
+                shutil.rmtree(user_backup_path)
+            shutil.copytree(user_path, user_backup_path, dirs_exist_ok=True)
+            
+            console.print(f"\n[bold green]Directory for {user} backed up[/bold green]")
+
+        except FileNotFoundError:
+            console.print(f"\n[bold red]No directory found for {user}[/bold red]")
+
+    else:
+
+        console.print("\n[bold red]Task Cancelled[/bold red]")
 
 def main():
     """
@@ -195,7 +215,8 @@ def main():
             user = Prompt.ask("\nEnter name of the user directory to parse logs")
             parse_directory_logs(user)
         elif menu_selection == "6":
-            backup_directory()
+            user = Prompt.ask("\nEnter name of the user directory to backup")
+            backup_directory(user)
         elif menu_selection == "7":
             break
 
