@@ -13,7 +13,7 @@ user_directory_root = "users_directory"
 
 def view_directory(user):
     """
-    
+    Displays a table view of the files for a user directory.
     """
 
     try:
@@ -32,7 +32,7 @@ def view_directory(user):
 
 def make_directory(user):
     """
-    
+    Creates a new directory with the input name.
     """
 
     console.print(f"[dim]\nThis task will create a new user directory with the name: {user}[/dim]")
@@ -56,7 +56,7 @@ def make_directory(user):
 
 def archive_directory(user):
     """
-    
+    Moves the user directory to the archive directory.
     """
 
     console.print(f"[dim]\nThis task will move the directory for {user} to the archive (delete)[/dim]")
@@ -81,7 +81,7 @@ def archive_directory(user):
 
 def sort_directory(user):
     """
-    
+    Sorts the ".mail" and ".log.txt" files in a user directory into respectively named folders.
     """
 
     console.print(f"[dim]\nThis task will sort the mail and log files for {user}[/dim]")
@@ -120,7 +120,7 @@ def sort_directory(user):
 
 def parse_directory_logs(user):
     """
-    
+    Parses logs for a user directory and copies the ERROR and WARNING logs into respectively named files.
     """
 
     console.print(f"[dim]\nThis task will parse the ERROR and WARNING logs for {user}[/dim]")
@@ -166,7 +166,7 @@ def parse_directory_logs(user):
 
 def backup_directory(user):
     """
-    
+    Copies the user directory to the backups directory. Overwrites existing user backup.
     """
 
     console.print(f"[dim]\nThis task will copy the directory for {user} to backups. Previous {user} backup will be OVERWROTE.[/dim]")
@@ -193,7 +193,7 @@ def backup_directory(user):
 
 def main():
     """
-    
+    Main application for the tool, displays menu of task options to users. Uses a loop to return the user to the task menu after each task is completed or exited.
     """
 
     console.print("\n***[bold blue] Welcome to the User Directory Management Tool [/bold blue]***")
