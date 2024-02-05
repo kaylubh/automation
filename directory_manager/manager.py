@@ -89,7 +89,6 @@ def sort_directory(user):
         try:
             user_path = os.path.join(user_directory_root, user)
             files = os.listdir(user_path)
-            # file_paths = [os.path.join(user_path, file) for file in files]
 
             for file in files:
 
@@ -106,11 +105,6 @@ def sort_directory(user):
                     unsorted_path = os.path.join(user_path, file)
                     sorted_path = os.path.join(logs_dir, file)
                     shutil.move(unsorted_path, sorted_path)
-
-            # for file_path in file_paths:
-            #     root, ext = os.path.splitext(file_path)
-            #     sort_path = os.path.join(user_path, ext, (root + ext))
-            #     shutil.move(file_path, sort_path)
                 
             console.print(f"\n[bold green]Directory sorted for {user}[/bold green]")
 
@@ -125,6 +119,46 @@ def parse_directory_logs(user):
     """
     
     """
+
+    confirmation = Confirm.ask(f"\nAre you sure you want to parse the logs for {user}?")
+
+    if confirmation:
+
+        try:
+            user_logs_path = os.path.join(user_directory_root, user, "logs")
+            log_files = os.listdir(user_logs_path)
+
+            errors_logs = []
+            warnings_logs = []
+
+            for log_file in log_files:
+
+                if re.search(r"\.log\.txt$", log_file):
+                    log_file_path = os.path.join(user_logs_path, log_file)
+                    with open(log_file_path, "r") as file:
+                        lines = file.readlines()
+                        errors_logs += [line for line in lines if re.search(r"ERROR:", line)]
+                        warnings_logs += [line for line in lines if re.search(r"WARNING:", line)]
+
+            errors_log_file_path = os.path.join(user_logs_path, "errors.log")
+            warnings_log_file_path = os.path.join(user_logs_path, "warnings.log")
+
+            with open(errors_log_file_path, "w") as file:
+                file.writelines(errors_logs)
+
+            with open(warnings_log_file_path, "w") as file:
+                file.writelines(warnings_logs)
+
+            console.print(f"\n[bold green]Directory logs for {user} parsed[/bold green]")
+
+        except FileNotFoundError:
+            console.print(f"\n[bold red]No logs found for {user}[/bold red]")
+            console.print(f"[bold red]If a directory exists for {user}, ensure the directory has been sorted[/bold red]")
+
+    else:
+
+        console.print("\n[bold red]Task Cancelled[/bold red]")
+
 
 def backup_directory(user):
     """
@@ -158,7 +192,8 @@ def main():
             user = Prompt.ask("\nEnter name of the user directory to sort")
             sort_directory(user)
         elif menu_selection == "5":
-            parse_directory_logs()
+            user = Prompt.ask("\nEnter name of the user directory to parse logs")
+            parse_directory_logs(user)
         elif menu_selection == "6":
             backup_directory()
         elif menu_selection == "7":
